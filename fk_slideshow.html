@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+	</head>
+	<style type="text/css">
+		*{
+			margin: 0px;
+			padding: 0px;
+		}
+		#lb{
+			width: 1200px;
+			height: 535px;
+			margin: 50px auto;
+			border: 2px black solid;
+			position: relative;
+			overflow: hidden;
+		}
+		#lb img{
+			display: 'none';
+		}
+		#lb ul{
+			position: absolute;
+			right: 46%;
+			top: 500px;
+		}
+		*#lb ul li{
+			display: block;
+			background: #DDDDDD;
+			float: left;
+			width: 12px;
+			height: 12px;
+			margin-left: 8px;
+			list-style:none;
+			border-radius: 50%;
+		}
+	</style>
+	<script type="text/javascript" src="jquery.min.js">	</script>
+	<script type="text/javascript">
+		$(function(){
+			var i=0;
+			// 轮播定时器
+			var inTimer = setInterval(inRun,2000);
+			var outTimer;
+			//图片及小圆点切换的方法
+			function inRun(){
+				i++;
+				i = (i==7)?0:i;
+				//图片切换
+				$("#lb img").eq(i).fadeIn(500).siblings('img').fadeOut(500);
+				//小圆点切换
+				$("#lb ul li").eq(i).css({'background':'#A10000'}).siblings('li').css({'background':'#DDDDDD'});
+			}
+			//鼠标移入小圆点
+			$("#lb ul li").mouseenter(function(){
+				//获取对象
+				var liThis = $(this);
+				//清除轮播动画
+				clearInterval(inTimer);
+				//开启定时器，防止快速选择小圆点
+				outTimer = setTimeout(function(){
+				i = liThis.index();
+				//通过小圆点切换，停止关闭淡入淡出动画
+				$("#lb img").eq(i).stop().fadeIn(500).siblings('img').stop().fadeOut(500);
+				//小圆点切换
+				$("#lb ul li").eq(i).css({'background':'#A10000'}).siblings('li').css({'background':'#DDDDDD'});
+				},200);
+			});
+			
+//			鼠标移出小圆点事件
+			$("#lb ul li").mouseleave(function(){
+				//清除掉防止图片快速切换
+				clearTimeout(outTimer);
+				//鼠标移出小圆点时开启图片轮播定时器
+				inTimer = setInterval(inRun,2000);
+			});
+		})
+	</script>	
+
+	<body>
+		<div id="lb">
+			<img src="fkimgs/img1.jpg" style="display: block;" />
+			<img src="fkimgs/img2.jpg" alt="" />
+			<img src="fkimgs/img3.jpg" alt="" />
+			<img src="fkimgs/img4.jpg" alt="" />
+			<img src="fkimgs/img5.jpg" alt="" />
+			<img src="fkimgs/img6.jpg" alt="" />
+			<img src="fkimgs/img7.jpg" alt="" />
+			<ul>
+				<li style="background: #A10000;"></li>
+				<li></li>
+				<li></li>
+				<li></li>
+				<li></li>
+				<li></li>
+				<li></li>
+			</ul>
+		</div>
+	</body>
+</html>
